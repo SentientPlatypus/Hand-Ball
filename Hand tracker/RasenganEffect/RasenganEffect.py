@@ -9,8 +9,8 @@ detector = HandDetector()
 while True:
     success, img = cap.read()
     img = detector.findHands(img, True)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     LandMarks = detector.find_Landmarks(img, 0, False)
-
     if LandMarks:
         centroidEdges = [
             LandMarks[0],
@@ -38,7 +38,6 @@ while True:
         radius = determineRadius(totalArea)
         rasengan_img = Image.open(r"C:\Users\trexx\Documents\PYTHON CODE LOL\Advanced AI Visions\Hand tracker\RasenganEffect\rasengan.png").convert("RGB")
         rasengan_img = rasengan_img.resize((radius*2, radius*2))
-        rasengan_img = ImageChops.invert(rasengan_img)
         img_pil = Image.fromarray(img)
         #toPasteAt = (center[0]-radius, center[1]+radius)
         toPasteAt = (center[0]-radius, center[1]-radius)
@@ -49,7 +48,7 @@ while True:
         
 
         print(center, radius)
-
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
 
 
