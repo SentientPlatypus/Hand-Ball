@@ -1,7 +1,7 @@
 import sys
 import random
 import time
-sys.path.insert(1, r'C:\Users\trexx\Documents\PYTHON CODE LOL\Advanced AI Visions\Hand tracker')
+sys.path.insert(1, r'W:\Code\Visions\Advanced AI Visions\Hand tracker')
 from HandTrackingModule import HandDetector
 import cv2
 from PIL import Image, ImageChops
@@ -22,7 +22,7 @@ def writeScore(score):
         w.writerow([score, date])
 
 def getHighScore():
-    dataframe = pd.read_csv(r"C:\Users\trexx\Documents\PYTHON CODE LOL\Advanced AI Visions\Hand tracker\catchBall\scores.csv")
+    dataframe = pd.read_csv(r"scores.csv")
     dataframe = dataframe.sort_values(["score"], ascending=False ,key= lambda x: x)
     firstRow = dataframe.head(1)
     score = firstRow["score"]
