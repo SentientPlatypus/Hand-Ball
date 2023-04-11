@@ -1,2 +1,2 @@
-# Advanced AI Visions
- Advanced visions projects with opencv. 
+# Try to catch the ball
+ A fun game using a hand tracking module 
