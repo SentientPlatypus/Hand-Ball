@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import constants
   
 cap = cv2.VideoCapture(0)
   
@@ -30,6 +31,35 @@ mask = np.zeros_like(old_frame)
   
 while(1):
     ret, frame = cap.read()
+    def blur(frame:np.ndarray) -> np.ndarray:
+        ksize = int(2 * round(3) + 1)
+        blur = cv2.blur(frame, (ksize,ksize))
+        return blur
+
+
+    frame = blur(frame)
+
+    def filterred(img):
+        hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+        mask = cv2.inRange(hsv, (constants.hue_R[0], constants.sat_R[0], constants.val_R[0]), (constants.hue_R[1], constants.sat_R[1], constants.val_R[1]))
+        return mask
+    
+    mask = filterred(frame)
+
+
+
+    contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    convexHulls = [cv2.convexHull(contour) for contour in contours]
+
+    blank = np.zeros_like(mask)
+    cv2.drawContours(blank, convexHulls, -1, (0, 255, 0), 1)
+
+
+    
+
+    
+
     frame_gray = cv2.cvtColor(frame,
                               cv2.COLOR_BGR2GRAY)
   
@@ -49,10 +79,10 @@ while(1):
         a, b = map(int, new.ravel())
         c, d = map(int, old.ravel())
 
-        mask = cv2.line(mask, (a, b), (c, d),
+        mask = cv2.line(blank, (a, b), (c, d),
                         color[i].tolist(), 2)
           
-        frame = cv2.circle(frame, (a, b), 5,
+        frame = cv2.circle(blank, (a, b), 5,
                            color[i].tolist(), -1)
           
     img = cv2.add(frame, mask)
